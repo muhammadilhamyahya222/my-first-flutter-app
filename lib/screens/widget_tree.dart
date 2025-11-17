@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:my_first_flutter_app/datas/notifiers.dart';
 import 'package:my_first_flutter_app/screens/pages/home_page.dart';
 import 'package:my_first_flutter_app/screens/pages/profile_page.dart';
+import 'package:my_first_flutter_app/screens/pages/settings_page.dart';
 import 'package:my_first_flutter_app/screens/widgets/navbar_widget.dart';
 
 //* Initializing a nullable (?) String variable for the AppBar title
 String? title = 'My Flutter App';
 
-List<Widget> pages = [
-  HomePage(),
-  ProfilePage(),
-];
+List<Widget> pages = [HomePage(), ProfilePage()];
 
 class WidgetTree extends StatelessWidget {
   const WidgetTree({super.key});
@@ -19,15 +17,31 @@ class WidgetTree extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title!), 
+        title: Text(title!),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: ValueListenableBuilder(valueListenable: isDarkModeNotifier, builder: (context, isDarkMode, child) {
-              return Icon(isDarkMode ? Icons.light_mode : Icons.dark_mode);
-            }),
+            icon: ValueListenableBuilder(
+              valueListenable: isDarkModeNotifier,
+              builder: (context, isDarkMode, child) {
+                return Icon(isDarkMode ? Icons.light_mode : Icons.dark_mode);
+              },
+            ),
             onPressed: () {
               isDarkModeNotifier.value = !isDarkModeNotifier.value;
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push( // Use push to go to a new page, also can use push replacement to not be able to go back (can implement logout this way)
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return SettingsPage(title: 'Settings',);
+                  },
+                ),
+              );
             },
           ),
         ],
